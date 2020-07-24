@@ -1,0 +1,65 @@
+\documentclass[compress]{beamer}
+\usepackage{ifthen}
+
+\title{Alignment Job Submission for CSA07}
+\author{Jim Pivarski, Alexei Safonov}
+\institute{Texas A\&M University}
+\date{4 May, 2007}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{\includegraphics[height=1 cm]{../cmslogo} \hspace{0.1 cm} \includegraphics[height=1 cm]{../tamulogo} \hfill
+\begin{minipage}{9 cm}
+\vspace{-0.75 cm} \small
+\begin{center}
+\ifthenelse{\equal{\insertpagenumber}{1}}{}{\insertsection}
+\end{center}
+\end{minipage} \hfill
+\begin{minipage}{1 cm}
+\vspace{-0.75 cm} \small
+\begin{center}
+\ifthenelse{\equal{\insertpagenumber}{1}}{}{\insertpagenumber/\pageref{numpages}}
+\end{center}
+\end{minipage}}
+
+\xdefinecolor{verylightgray}{rgb}{0.95,0.95,0.95}
+\beamertemplateshadingbackground{verylightgray}{white}
+
+\begin{document}
+\frame{\titlepage}
+\section*{Alignment Job Submission for CSA07 --- Jim Pivarski}
+
+\begin{frame}
+\frametitle{Issues (all on one slide)}
+
+\begin{itemize}
+\item How many jobs?
+\begin{itemize}
+  \item Tracker with HIP, muons with HIP, tracker with MillePede, Santander muon-MillePede producer, tracker with Kalman?
+  \item First two share HIPAlignmentProducer, but have different configuration files/data sources
+  \item {\small \tt CommonAlignmentProducer/test/alignment.pl} seems to be general
+  enough for both, if some of the variables are changed (pointers to
+  configuration files)
+\begin{itemize}
+  \item {\small \tt trackerHIP\_setup.pl} and {\small \tt muonHIP\_setup.pl}?
+\end{itemize}
+\end{itemize}
+
+\item Where should they be run and where should the output go?
+\begin{itemize}
+  \item {\small \tt bsub -q alignment\_farm}?
+  \item {\small \tt /castor/cern.ch/user/p/pivarski/}?
+\end{itemize}
+
+\item Monitoring: monitoring collector works the same way as HIPAlignmentAlgorithm collector
+\begin{itemize}
+  \item Just need to add the following to alignment.pl:
+\begin{minipage}{1.5\linewidth}
+\hspace{-2.5 cm} \scriptsize \tt replace AlignmentProducer.monitorConfig.AlignmentMonitorCSA07.collectorActive = true
+\end{minipage}
+  \item Static histograms will be collected and merged, ntuples will not
+\end{itemize}
+\end{itemize}
+\label{numpages}
+\end{frame}
+
+\end{document}
